@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Restore{% endblock %}
+{% block content %}
+<h1>Restore <code>{{ path }}</code></h1>
+<form method="post" action="/client/{{ client_id }}/job/{{ job_id }}/restore/{{ path }}" class="panel stacked">
+  <label for="target_client">Restore to client</label>
+  <select id="target_client" name="target_client">
+    {% for t in targets %}<option value="{{ t.id }}">{{ t.name }}</option>{% endfor %}
+  </select>
+  <label for="target_path">Into directory <span class="hint">existing files with the same name are overwritten</span></label>
+  <input type="text" id="target_path" name="target_path" value="{{ target_path }}" required>
+  <div class="form-actions">
+    <button class="primary">Start restore</button>
+    <a class="button" href="/client/{{ client_id }}/job/{{ job_id }}/backup/{{ path }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

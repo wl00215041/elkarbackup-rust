@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<h1>About</h1>
+<div class="panel">
+  <p>ElkarBackup {{ version }} — centralised backups based on rsnapshot and rsync.</p>
+</div>
+<div class="panel">
+  <h2>Server SSH key</h2>
+  {% if let Some(key) = public_key %}
+  <p>Add this key to <code>~/.ssh/authorized_keys</code> of the backup user on every client.
+     It can also be fetched without logging in from <a href="/config/publickey">/config/publickey</a>.</p>
+  <pre>{{ key }}</pre>
+  {% else %}
+  <p class="muted">No key pair exists yet ({{ key_path }}).</p>
+  {% endif %}
+  {% if layout.is_admin %}
+  <form method="post" action="/config/publickey/generate" onsubmit="return confirm('Generate a new key pair? Clients configured with the old key will stop working.')">
+    <button>Generate new key pair</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

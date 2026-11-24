@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Logs{% endblock %}
+{% block content %}
+<h1>Logs</h1>
+<form method="get" action="/logs" class="toolbar">
+  <select name="level" class="inline">
+    <option value="">All levels</option>
+    {% for level in levels %}<option value="{{ level }}" {% if level == &query.level %}selected{% endif %}>≥ {{ level }}</option>{% endfor %}
+  </select>
+  <input type="text" name="source" value="{{ query.source }}" placeholder="Source" class="inline">
+  <input type="text" name="text" value="{{ query.text }}" placeholder="Message contains" class="inline">
+  {% if let Some(client) = query.client %}<input type="hidden" name="client" value="{{ client }}">{% endif %}
+  {% if let Some(job) = query.job %}<input type="hidden" name="job" value="{{ job }}">{% endif %}
+  <button>Filter</button>
+  {% if query.client.is_some() %}<a href="/logs">Clear subject filter</a>{% endif %}
+  <span class="spacer"></span>
+  <span class="muted small">{{ total }} records</span>
+</form>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Time</th><th>Level</th><th>Source</th><th>About</th><th>Message</th><th>User</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td class="small" style="white-space:nowrap">{{ r.time }}</td>
+      <td><span class="badge {{ r.level }}">{{ r.level }}</span></td>
+      <td class="small">{{ r.source }}</td>
+      <td class="small">{% if let Some(subject) = r.subject %}<a href="{{ subject }}">{{ subject }}</a>{% endif %}</td>
+      <td><pre>{{ r.message }}</pre>{% if r.has_file %}<a class="small" href="/log/{{ r.id }}/download">full log</a>{% endif %}</td>
+      <td class="small">{{ r.user }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6" class="muted">No records.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<div class="pagination">
+  {% if let Some(prev) = prev %}<a class="button small" href="{{ prev }}">← Newer</a>{% endif %}
+  <span class="muted small">Page {{ page }} of {{ pages }}</span>
+  {% if let Some(next) = next %}<a class="button small" href="{{ next }}">Older →</a>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Backup location{% endblock %}
+{% block content %}
+<h1>{% if id.is_some() %}Location: {{ form.name }}{% else %}New backup location{% endif %}</h1>
+{% include "_errors.html" %}
+<form method="post" action="{% if let Some(id) = id %}/location/{{ id }}{% else %}/location/new{% endif %}" class="panel stacked">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" value="{{ form.name }}" required>
+  <label for="directory">Directory <span class="hint">absolute path</span></label>
+  <input type="text" id="directory" name="directory" value="{{ form.directory }}" required placeholder="/var/spool/elkarbackup/backups">
+  <label for="host">NFS host <span class="hint">optional; the directory is then reached through /net/&lt;host&gt;</span></label>
+  <input type="text" id="host" name="host" value="{{ form.host }}">
+  <label for="max_parallel_jobs">Max parallel jobs</label>
+  <input type="number" id="max_parallel_jobs" name="max_parallel_jobs" value="{{ form.max_parallel_jobs }}" min="1">
+  <div class="form-actions">
+    <button class="primary">Save</button>
+    <a class="button" href="/locations">Cancel</a>
+  </div>
+</form>
+{% endblock %}

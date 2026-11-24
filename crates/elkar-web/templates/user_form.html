@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}User{% endblock %}
+{% block content %}
+<h1>{% if id.is_some() %}User: {{ form.username }}{% else %}New user{% endif %}</h1>
+{% include "_errors.html" %}
+<form method="post" action="{% if let Some(id) = id %}/user/{{ id }}{% else %}/user/new{% endif %}" class="panel stacked">
+  <div class="grid">
+    <div>
+      <label for="username">User name</label>
+      <input type="text" id="username" name="username" value="{{ form.username }}" required>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" value="{{ form.email }}" required>
+    </div>
+    <div>
+      <label for="role">Role</label>
+      <select id="role" name="role">
+        <option value="user" {% if form.role == "user" %}selected{% endif %}>User (own clients only)</option>
+        <option value="admin" {% if form.role == "admin" %}selected{% endif %}>Administrator</option>
+      </select>
+    </div>
+    <div>
+      <label for="lines_per_page">Lines per page</label>
+      <input type="number" id="lines_per_page" name="lines_per_page" value="{{ form.lines_per_page }}" min="5" max="500">
+    </div>
+  </div>
+  <label for="password">Password {% if id.is_some() %}<span class="hint">leave empty to keep the current one</span>{% endif %}</label>
+  <input type="password" id="password" name="password" {% if id.is_none() %}required{% endif %} minlength="8" autocomplete="new-password">
+  <label class="check"><input type="checkbox" name="is_active" value="true" {% if form.is_active %}checked{% endif %}> Active</label>
+  <div class="form-actions">
+    <button class="primary">Save</button>
+    <a class="button" href="/users">Cancel</a>
+  </div>
+</form>
+{% endblock %}

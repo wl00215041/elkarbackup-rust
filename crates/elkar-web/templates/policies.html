@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Policies{% endblock %}
+{% block content %}
+<h1>Policies</h1>
+<div class="toolbar"><span class="spacer"></span><a class="button primary" href="/policy/new">New policy</a></div>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Name</th><th>Retains</th><th>Description</th><th></th></tr></thead>
+  <tbody>
+  {% for p in policies %}
+    <tr>
+      <td><a href="/policy/{{ p.id }}">{{ p.name }}</a></td>
+      <td class="small">{{ p.retains }}</td>
+      <td class="muted small">{{ p.description }}</td>
+      <td class="actions">
+        <form method="post" action="/policy/{{ p.id }}/delete" onsubmit="return confirm('Delete this policy?')"><button class="small danger">Delete</button></form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="4" class="muted">No policies.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% if !errors.is_empty() %}
+<div class="errors">
+  <strong>Please fix the following:</strong>
+  <ul>
+    {% for (field, message) in errors.0 %}
+    <li>{% if !field.is_empty() %}<strong>{{ field }}</strong>: {% endif %}{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

@@ -1,0 +1,36 @@
+[package]
+name = "elkar-web"
+description = "Web interface and REST API for ElkarBackup"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+argon2.workspace = true
+askama.workspace = true
+axum.workspace = true
+axum-extra.workspace = true
+base64.workspace = true
+chrono.workspace = true
+elkar-core.workspace = true
+elkar-engine.workspace = true
+elkar-storage.workspace = true
+nix.workspace = true
+rand.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+base64.workspace = true
+http-body-util = "0.1"
+sqlx.workspace = true
+tempfile.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true

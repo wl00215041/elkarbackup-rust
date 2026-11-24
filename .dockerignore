@@ -1,2 +1,6 @@
-.github/
-vendor/
+target
+.git
+.env
+deploy
+docs
+**/*.local.toml

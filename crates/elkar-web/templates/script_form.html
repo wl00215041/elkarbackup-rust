@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Script{% endblock %}
+{% block content %}
+<h1>{% if id.is_some() %}Script: {{ form.name }}{% else %}New script{% endif %}</h1>
+{% include "_errors.html" %}
+<form method="post" enctype="multipart/form-data" action="{% if let Some(id) = id %}/script/{{ id }}{% else %}/script/new{% endif %}" class="panel stacked">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" value="{{ form.name }}" required>
+  <label for="description">Description</label>
+  <textarea id="description" name="description">{{ form.description }}</textarea>
+  <label for="file">Script file {% if id.is_some() %}<span class="hint">leave empty to keep the current file</span>{% endif %}</label>
+  <input type="file" id="file" name="file">
+  <label>May run as</label>
+  <label class="check"><input type="checkbox" name="is_client_pre" value="true" {% if form.is_client_pre %}checked{% endif %}> Client pre script</label>
+  <label class="check"><input type="checkbox" name="is_client_post" value="true" {% if form.is_client_post %}checked{% endif %}> Client post script</label>
+  <label class="check"><input type="checkbox" name="is_job_pre" value="true" {% if form.is_job_pre %}checked{% endif %}> Job pre script</label>
+  <label class="check"><input type="checkbox" name="is_job_post" value="true" {% if form.is_job_post %}checked{% endif %}> Job post script</label>
+  <div class="form-actions">
+    <button class="primary">Save</button>
+    <a class="button" href="/scripts">Cancel</a>
+  </div>
+</form>
+{% endblock %}

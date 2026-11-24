@@ -1,0 +1,30 @@
+# Server configuration used by docker-compose.yml.
+# DATABASE_URL and the listen address are provided by the compose file.
+
+database_url = "postgres://elkarbackup@db/elkarbackup"
+# Absolute URL users reach the web interface at (used in emails).
+public_url = "http://localhost:8080"
+
+[paths]
+data_dir = "/var/lib/elkarbackup"
+
+[backup]
+rsnapshot = "/usr/bin/rsnapshot"
+max_parallel_jobs = 1
+post_on_pre_fail = true
+disk_usage = true
+max_log_age_days = 365
+script_prefix = []
+
+[web]
+# Enable when served over HTTPS through a reverse proxy.
+secure_cookies = false
+session_hours = 8
+
+# [mail]
+# host = "smtp.example.com"
+# port = 587
+# security = "starttls"   # none | starttls | tls
+# username = "elkarbackup"
+# password = "secret"
+# from = "ElkarBackup <backup@example.com>"

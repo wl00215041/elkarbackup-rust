@@ -1,0 +1,48 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "BSD-3-Clause"
+rust-version = "1.88"
+
+[workspace.dependencies]
+elkar-core = { path = "crates/elkar-core" }
+elkar-storage = { path = "crates/elkar-storage" }
+elkar-engine = { path = "crates/elkar-engine" }
+elkar-web = { path = "crates/elkar-web" }
+
+anyhow = "1"
+argon2 = "0.5"
+askama = "0.14"
+async-trait = "0.1"
+axum = { version = "0.8", features = ["macros", "multipart"] }
+axum-extra = { version = "0.10", features = ["cookie", "form", "query"] }
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4", features = ["derive", "env"] }
+futures = "0.3"
+lettre = { version = "0.11", default-features = false, features = ["builder", "smtp-transport", "tokio1", "tokio1-rustls-tls", "hostname"] }
+rand = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "postgres", "chrono", "json", "macros", "migrate"] }
+tempfile = "3"
+thiserror = "2"
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["io", "rt"] }
+toml = "0.8"
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["fs", "trace"] }
+nix = { version = "0.29", features = ["signal", "fs"] }
+sha2 = "0.10"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }

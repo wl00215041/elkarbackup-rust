@@ -1,0 +1,16 @@
+# Development database only. Integration tests use DATABASE_URL from .env.
+# The production deployment lives in deploy/docker-compose.yml.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: elkar
+      POSTGRES_PASSWORD: elkar
+      POSTGRES_DB: elkarbackup
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

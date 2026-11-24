@@ -1,44 +1,4 @@
-# Symfony4 default gitignore #
-##############################
-
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
-/vendor/
-###< symfony/framework-bundle ###
-
-# Symfony4 personal gitignore #
-###############################
-config/parameters.yaml
-# Makepackage #
-###############
-.debian
-
-# OS generated files #
-######################
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-/.buildpath
-/.project
-/.settings/
-/composer
-/composer.phar
-/lintian.log
-
-###> symfony/phpunit-bridge ###
-.phpunit
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
-# Test data
-docker/test_e2e/tmp/
+/target
+/var
+*.local.toml
+/deploy/.env

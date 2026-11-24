@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %} · ElkarBackup</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <span class="brand">ElkarBackup</span>
+    <nav>
+      <a href="/clients" {% if layout.active == "clients" %}class="active"{% endif %}>Clients</a>
+      <a href="/status" {% if layout.active == "status" %}class="active"{% endif %}>Status</a>
+      <a href="/logs" {% if layout.active == "logs" %}class="active"{% endif %}>Logs</a>
+      {% if layout.is_admin %}
+      <a href="/jobs/sort" {% if layout.active == "sort" %}class="active"{% endif %}>Priorities</a>
+      <a href="/policies" {% if layout.active == "policies" %}class="active"{% endif %}>Policies</a>
+      <a href="/scripts" {% if layout.active == "scripts" %}class="active"{% endif %}>Scripts</a>
+      <a href="/locations" {% if layout.active == "locations" %}class="active"{% endif %}>Locations</a>
+      <a href="/users" {% if layout.active == "users" %}class="active"{% endif %}>Users</a>
+      {% endif %}
+      <a href="/about" {% if layout.active == "about" %}class="active"{% endif %}>About</a>
+    </nav>
+    <span class="user">
+      <a href="/account">{{ layout.user }}</a>
+      <form method="post" action="/logout"><button class="small">Log out</button></form>
+    </span>
+  </header>
+  <main>
+    {% if let Some(flash) = layout.flash %}<div class="flash">{{ flash }}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

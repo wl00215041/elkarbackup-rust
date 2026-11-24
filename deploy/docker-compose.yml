@@ -1,0 +1,45 @@
+# Production deployment: `cp .env.example .env`, edit it, then
+#   docker compose up -d --build
+name: elkarbackup
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: elkarbackup
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: elkarbackup
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U elkarbackup -d elkarbackup"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  elkarbackup:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: elkarbackup:${ELKARBACKUP_VERSION:-latest}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://elkarbackup:${POSTGRES_PASSWORD}@db:5432/elkarbackup
+      TZ: ${TZ:-UTC}
+      RUST_LOG: ${RUST_LOG:-info}
+    volumes:
+      - ./elkarbackup.toml:/etc/elkarbackup/elkarbackup.toml:ro
+      # SSH key, scripts, logs and, by default, the backups themselves.
+      - ${ELKARBACKUP_DATA:-elkarbackup-data}:/var/lib/elkarbackup
+    ports:
+      - "${ELKARBACKUP_BIND:-127.0.0.1}:${ELKARBACKUP_PORT:-8080}:8080"
+    # Lets running jobs finish their SIGTERM -> SIGKILL sequence.
+    stop_grace_period: 30s
+
+volumes:
+  pgdata:
+  elkarbackup-data:

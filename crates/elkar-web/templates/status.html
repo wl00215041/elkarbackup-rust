@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Status{% endblock %}
+{% block content %}
+<h1>Status</h1>
+<h2>Queue</h2>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Client</th><th>Job</th><th>State</th><th>Queued at</th><th>Running since</th><th></th></tr></thead>
+  <tbody>
+  {% for q in queue %}
+    <tr>
+      <td><a href="/client/{{ q.client_id }}">{{ q.client }}</a></td>
+      <td><a href="/client/{{ q.client_id }}/job/{{ q.job_id }}">{{ q.job }}</a></td>
+      <td><span class="badge warning">{{ q.state }}</span> {% if q.aborted %}<span class="badge error">aborting</span>{% endif %}</td>
+      <td class="small">{{ q.enqueued }}</td>
+      <td class="small">{{ q.running_since }}</td>
+      <td class="actions">{% if !q.aborted %}<form method="post" action="/client/{{ q.client_id }}/job/{{ q.job_id }}/abort"><button class="small danger">Abort</button></form>{% endif %}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6" class="muted">The queue is empty.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% if !clients.is_empty() %}
+<h2>Busy clients</h2>
+<table>
+  <tbody>
+  {% for c in clients %}<tr><td><a href="/client/{{ c.id }}">{{ c.name }}</a></td><td><span class="badge">{{ c.state }}</span></td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if !locations.is_empty() %}
+<h2>Storage</h2>
+<table>
+  <thead><tr><th>Location</th><th>Directory</th><th>Used</th></tr></thead>
+  <tbody>
+  {% for l in locations %}
+    <tr>
+      <td>{{ l.name }}</td>
+      <td><code>{{ l.directory }}</code></td>
+      <td><span class="meter"><span style="width: {{ l.percent }}%"></span></span> {{ l.used }} / {{ l.total }} ({{ l.percent }}%)</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

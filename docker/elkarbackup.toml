@@ -1,0 +1,16 @@
+# Configuration baked into the container image.
+# DATABASE_URL and ELKARBACKUP_LISTEN come from the environment; mount your
+# own file over /etc/elkarbackup/elkarbackup.toml to change anything else.
+
+database_url = "postgres://elkarbackup@db/elkarbackup"
+public_url = "http://localhost:8080"
+
+[paths]
+data_dir = "/var/lib/elkarbackup"
+
+[backup]
+rsnapshot = "/usr/bin/rsnapshot"
+max_parallel_jobs = 1
+
+[web]
+secure_cookies = false

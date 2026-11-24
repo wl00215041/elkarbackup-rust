@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Account{% endblock %}
+{% block content %}
+<h1>Account: {{ layout.user }}</h1>
+{% include "_errors.html" %}
+<div class="grid">
+  <form method="post" action="/account" class="panel stacked">
+    <h2>Preferences</h2>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" value="{{ email }}" required>
+    <label for="lines_per_page">Lines per page</label>
+    <input type="number" id="lines_per_page" name="lines_per_page" value="{{ lines_per_page }}" min="5" max="500">
+    <div class="form-actions"><button class="primary">Save</button></div>
+  </form>
+  <form method="post" action="/account/password" class="panel stacked">
+    <h2>Change password</h2>
+    <label for="old_password">Current password</label>
+    <input type="password" id="old_password" name="old_password" required>
+    <label for="new_password">New password <span class="hint">(at least 8 characters)</span></label>
+    <input type="password" id="new_password" name="new_password" required minlength="8">
+    <label for="confirm_password">Repeat new password</label>
+    <input type="password" id="confirm_password" name="confirm_password" required>
+    <div class="form-actions"><button class="primary">Change password</button></div>
+  </form>
+</div>
+{% endblock %}

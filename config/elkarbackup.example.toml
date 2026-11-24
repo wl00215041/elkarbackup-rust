@@ -1,0 +1,45 @@
+# ElkarBackup server configuration.
+# DATABASE_URL and ELKARBACKUP_LISTEN environment variables override the
+# corresponding settings.
+
+database_url = "postgres://elkarbackup:secret@localhost/elkarbackup"
+listen = "127.0.0.1:8080"
+# Absolute URL of the web interface, used in notification emails.
+public_url = "http://localhost:8080"
+
+[paths]
+# Base directory; every path below defaults to a sub directory of it.
+data_dir = "/var/lib/elkarbackup"
+# tmp_dir = "/var/lib/elkarbackup/tmp"
+# log_dir = "/var/lib/elkarbackup/log"
+# scripts_dir = "/var/lib/elkarbackup/scripts"
+# ssh_key = "/var/lib/elkarbackup/ssh/id_ed25519"
+# Directory of the backup location created on first start.
+# default_backup_dir = "/var/lib/elkarbackup/backups"
+
+[backup]
+rsnapshot = "/usr/bin/rsnapshot"
+# Jobs running at the same time across all clients.
+max_parallel_jobs = 1
+# Run post job scripts even when pre job scripts fail.
+post_on_pre_fail = true
+# Measure snapshot sizes with `du` after each backup.
+disk_usage = true
+# Days to keep activity records; 0 keeps them forever.
+max_log_age_days = 365
+# Command placed before user scripts, e.g. ["sudo", "-n"].
+script_prefix = []
+
+[web]
+# Set when served over HTTPS (behind a TLS terminating proxy).
+secure_cookies = false
+session_hours = 8
+
+# Uncomment to send job notifications.
+# [mail]
+# host = "smtp.example.com"
+# port = 587
+# security = "starttls"   # none | starttls | tls
+# username = "elkarbackup"
+# password = "secret"
+# from = "ElkarBackup <backup@example.com>"

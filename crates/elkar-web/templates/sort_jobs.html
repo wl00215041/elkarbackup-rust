@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Job priorities{% endblock %}
+{% block content %}
+<h1>Job priorities</h1>
+<p class="muted">Jobs with a lower number run first when several are queued at the same time.</p>
+<form method="post" action="/jobs/sort">
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Priority</th><th>Client</th><th>Job</th></tr></thead>
+    <tbody>
+    {% for job in jobs %}
+      <tr>
+        <td><input type="number" name="priority_{{ job.id }}" value="{{ loop.index }}" class="inline"></td>
+        <td>{{ job.client }}</td>
+        <td>{{ job.name }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="3" class="muted">No jobs.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <div class="form-actions"><button class="primary">Save order</button></div>
+</form>
+{% endblock %}

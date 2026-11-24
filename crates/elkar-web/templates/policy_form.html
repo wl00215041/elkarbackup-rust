@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Policy{% endblock %}
+{% block content %}
+<h1>{% if id.is_some() %}Policy: {{ form.name }}{% else %}New policy{% endif %}</h1>
+{% include "_errors.html" %}
+<form method="post" action="{% if let Some(id) = id %}/policy/{{ id }}{% else %}/policy/new{% endif %}" class="panel stacked">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" value="{{ form.name }}" required>
+  <label for="description">Description</label>
+  <textarea id="description" name="description">{{ form.description }}</textarea>
+
+  <h2>Retain levels</h2>
+  <p class="muted small">Times are <code>HH:MM</code> lists (<code>08:00, 20:00</code>). Weekdays (<code>mon, fri</code>),
+    days of month (<code>1, 15</code>) and months (<code>1, 7</code>) are optional filters; leave empty for “every”.
+    When several levels fire at once the less frequent ones rotate first.</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Level</th><th>Keep</th><th>Times</th><th>Weekdays</th><th>Days of month</th><th>Months</th></tr></thead>
+    <tbody>
+    {% for row in form.rows %}
+      <tr>
+        <td><label class="check"><input type="checkbox" name="{{ row.level }}_enabled" value="true" {% if row.enabled %}checked{% endif %}> {{ row.level }}</label></td>
+        <td><input type="number" name="{{ row.level }}_count" value="{{ row.count }}" min="1" class="inline" style="width:5em"></td>
+        <td><input type="text" name="{{ row.level }}_times" value="{{ row.times }}" placeholder="21:00"></td>
+        <td><input type="text" name="{{ row.level }}_weekdays" value="{{ row.weekdays }}"></td>
+        <td><input type="text" name="{{ row.level }}_days" value="{{ row.days }}"></td>
+        <td><input type="text" name="{{ row.level }}_months" value="{{ row.months }}"></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+  <div class="grid">
+    <div>
+      <label for="include">Include patterns <span class="hint">one per line</span></label>
+      <textarea id="include" name="include">{{ form.include }}</textarea>
+    </div>
+    <div>
+      <label for="exclude">Exclude patterns <span class="hint">one per line</span></label>
+      <textarea id="exclude" name="exclude">{{ form.exclude }}</textarea>
+    </div>
+  </div>
+  <label class="check"><input type="checkbox" name="sync_first" value="true" {% if form.sync_first %}checked{% endif %}> Use rsnapshot <code>sync_first</code></label>
+  <div class="form-actions">
+    <button class="primary">Save</button>
+    <a class="button" href="/policies">Cancel</a>
+  </div>
+</form>
+{% endblock %}

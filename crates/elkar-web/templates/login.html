@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in · ElkarBackup</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="narrow">
+    <div class="panel">
+      <h1>ElkarBackup</h1>
+      {% if let Some(error) = error %}<div class="errors">{{ error }}</div>{% endif %}
+      <form method="post" action="/login" class="stacked">
+        <label for="username">User name</label>
+        <input type="text" id="username" name="username" value="{{ username }}" autofocus required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <div class="form-actions"><button class="primary">Log in</button></div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

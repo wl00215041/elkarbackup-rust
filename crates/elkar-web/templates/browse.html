@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Backups{% endblock %}
+{% block content %}
+<h1><a href="/client/{{ client_id }}">{{ client_name }}</a> / <a href="/client/{{ client_id }}/job/{{ job_id }}">{{ job_name }}</a></h1>
+<div class="toolbar">
+  <span><a href="/client/{{ client_id }}/job/{{ job_id }}/backup/">snapshots</a>
+  {% for crumb in crumbs %} / <a href="/client/{{ client_id }}/job/{{ job_id }}/backup/{{ crumb.path }}">{{ crumb.name }}</a>{% endfor %}</span>
+  <span class="spacer"></span>
+  {% if !path.is_empty() %}
+  <a class="button" href="/client/{{ client_id }}/job/{{ job_id }}/backup/{{ path }}?download=true">Download as .tar.gz</a>
+  <a class="button" href="/client/{{ client_id }}/job/{{ job_id }}/restore/{{ path }}">Restore…</a>
+  {% endif %}
+</div>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Name</th><th>Size</th><th>Modified</th><th></th></tr></thead>
+  <tbody>
+  {% for entry in entries %}
+    <tr>
+      <td>{% if entry.is_dir %}📁 <a href="/client/{{ client_id }}/job/{{ job_id }}/backup/{{ entry.path }}">{{ entry.name }}/</a>{% else %}<a href="/client/{{ client_id }}/job/{{ job_id }}/backup/{{ entry.path }}">{{ entry.name }}</a>{% endif %}
+        {% if entry.is_symlink %}<span class="badge">link</span>{% endif %}</td>
+      <td>{{ entry.size }}</td>
+      <td class="small">{{ entry.modified }}</td>
+      <td class="actions">
+        {% if entry.is_dir %}<a class="button small" href="/client/{{ client_id }}/job/{{ job_id }}/backup/{{ entry.path }}?download=true">.tar.gz</a>{% endif %}
+        {% if !path.is_empty() %}<a class="button small" href="/client/{{ client_id }}/job/{{ job_id }}/restore/{{ entry.path }}">Restore</a>{% endif %}
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="4" class="muted">Empty.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
